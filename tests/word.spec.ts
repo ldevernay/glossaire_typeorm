@@ -50,8 +50,10 @@ describe('Word CRUD', () => {
     });
 
     after(async () => {
+        
         let james = await User.findOne({name: "James"});
         await james.remove();
+
         await connection.close();
     })
 });
