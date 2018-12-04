@@ -3,10 +3,13 @@ import { createConnection } from 'typeorm';
 import User from '../src/entity/User';
 
 describe('User CRUD', () => {
+    
     let connection;
+
     before(async () => {
         connection = await createConnection();
-    })
+    });
+
     it('properly creates the user', async () => {
             const user = new User();
             user.name = "Bobby";
@@ -17,6 +20,7 @@ describe('User CRUD', () => {
                 expect(result).to.exist;
             }
     });
+
     it('successfully updates a given user', async () => {
             const bobby = await User.findOne({name: "Bobby"});
             bobby.name = "John";
@@ -27,6 +31,7 @@ describe('User CRUD', () => {
                 expect(result).to.exist;
             }
     });
+
     it('successfully removes a given user', async () => {
             const bobby = await User.findOne({name: "John"});
             await bobby.remove();
@@ -35,7 +40,7 @@ describe('User CRUD', () => {
             if (result){
                 expect(result).not.to.exist;
             }
-    })
+    });
 
     after(async () => {
         await connection.close();
