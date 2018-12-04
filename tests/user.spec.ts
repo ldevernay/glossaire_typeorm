@@ -8,19 +8,16 @@ describe('User CRUD', () => {
         connection = await createConnection();
     })
     it('properly creates the user', async () => {
-        //return createConnection().then(async connection => {
             const user = new User();
             user.name = "Bobby";
             await user.save();
 
-            let result = await User.find({name: "Bobby"});
+            let result = await User.findOne({name: "Bobby"});
             if (result){
-                expect(result.length).to.be.greaterThan(0);
+                expect(result).to.exist;
             }
-        //});
     });
     it('successfully updates a given user', async () => {
-        //return createConnection().then(async connection => {
             const bobby = await User.findOne({name: "Bobby"});
             bobby.name = "John";
             await bobby.save();
@@ -29,7 +26,15 @@ describe('User CRUD', () => {
             if (result){
                 expect(result).to.exist;
             }
-        //})
+    });
+    it('successfully removes a given user', async () => {
+            const bobby = await User.findOne({name: "John"});
+            await bobby.remove();
+
+            let result = await User.findOne({name: "John"});
+            if (result){
+                expect(result).not.to.exist;
+            }
     })
 
     after(async () => {
