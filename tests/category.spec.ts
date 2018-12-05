@@ -38,26 +38,26 @@ describe('Category CRUD', () => {
         expect(parent.categories.length).to.be.greaterThan(0);
     });
 
-    // it('successfully updates a given category', async () => {
-    //     const google = await Link.findOne({url: "https://www.google.com"});
-    //     google.url = "https://www.google.fr";
-    //     await google.save();
+    it('successfully updates a given category', async () => {
+        const webdev = await Category.findOne({name: "WebDev"});
+        webdev.name = "Software";
+        await webdev.save();
 
-    //     let result = await Link.findOne({url: "https://www.google.fr"});
-    //     if (result){
-    //         expect(result.url).to.equal("https://www.google.fr");
-    //     }
-    // });
+        let result = await Category.findOne({name: "Software"});
+        if (result){
+            expect(result).to.exist;
+        }
+    });
 
-    // it('successfully removes a given category', async () => {
-    //     const google = await Link.findOne({url: "https://www.google.fr"});
-    //     await google.remove();
+    it('successfully removes a given category', async () => {
+        const webdev = await Category.findOne({name: "Software"});
+        await webdev.remove();
 
-    //     let result = await Link.findOne({url: "https://www.google.fr"});
-    //     if (result){
-    //         expect(result).not.to.exist;
-    //     }
-    // });
+        let result = await Category.findOne({name: "Software"});
+        if (result){
+            expect(result).not.to.exist;
+        }
+    });
 
     after(async () => {
 
