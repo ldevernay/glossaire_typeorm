@@ -5,22 +5,21 @@ import Word from '../src/entity/Word';
 import Link from '../src/entity/Link';
 
 describe('Link CRUD', () => {
-    
     let connection;
-    let james;
+    let zelda;
     let word;
 
     before(async () => {
         connection = await createConnection();
 
-        james = new User();
-        james.name = "James";
-        await james.save();
+        zelda = new User();
+        zelda.name = "Zelda";
+        await zelda.save();
 
         word = new Word();
         word.name = "Browser";
         word.definition = "Search and thou shall find"
-        word.owner = james;
+        word.owner = zelda;
         await word.save();
     });
 
@@ -36,8 +35,8 @@ describe('Link CRUD', () => {
             expect(result).to.exist;
         }
 
-        let parent = await Word.findOne({name: "Browser"}, {relations: [word]});
-        expect(parent.links).to.include(link);
+        let parent = await Word.findOne({name: "Browser"}, {relations: ["links"]});
+        expect(parent.links.length).to.be.greaterThan(0);
     });
 
     it('successfully updates a given link', async () => {
@@ -63,9 +62,9 @@ describe('Link CRUD', () => {
 
     after(async () => {
 
-        word.remove();
+        await word.remove();
         
-        james.remove();
+        await zelda.remove();
 
         await connection.close();
     })
